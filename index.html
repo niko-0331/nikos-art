@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>鳴ってはいけない教室</title>
+<meta name="description" content="過敏性腸症候群(IBS)など、見えにくい不調への理解を目的とした心理ホラー・アドベンチャー">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div id="app">
+  <div id="stage">
+    <canvas id="scene" width="320" height="180"></canvas>
+    <div id="vignette"></div>
+    <div id="scan"></div>
+    <div id="flash"></div>
+    <div id="stressbar"><span>鼓動</span><div><i></i></div></div>
+  </div>
+
+  <div id="textbox" hidden>
+    <div id="name"></div>
+    <p id="text"></p>
+    <span id="next" hidden>▼</span>
+  </div>
+  <div id="choices"></div>
+
+  <div id="tools">
+    <button id="mute" type="button" aria-label="音のオン・オフ">♪ ON</button>
+    <button id="menu" type="button">タイトルへ</button>
+  </div>
+</div>
+
+<div id="chapter" hidden></div>
+<div id="screen"></div>
+
+<noscript><p style="padding:2em;color:#fff">このゲームはJavaScriptが必要です。</p></noscript>
+<script src="script.js"></script>
+</body>
+</html>

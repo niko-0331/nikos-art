@@ -1,0 +1,111 @@
+:root{
+  --fg:#e8e2d6; --dim:#8a847a; --red:#b3202a; --gold:#d9b45a; --good:#8fc9a0;
+  --font:'Hiragino Mincho ProN','Yu Mincho','Noto Serif JP','MS PMincho',serif;
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html,body{margin:0;min-height:100%;background:#000;color:var(--fg);font-family:var(--font)}
+body{-webkit-tap-highlight-color:transparent;user-select:none}
+
+#app{max-width:960px;margin:0 auto;padding:8px;display:flex;flex-direction:column;gap:8px}
+
+/* ---- ステージ ---- */
+#stage{position:relative;width:100%;aspect-ratio:16/9;background:#000;border:2px solid #1d1d1f;overflow:hidden}
+#scene{width:100%;height:100%;display:block;image-rendering:pixelated;image-rendering:crisp-edges}
+#vignette{position:absolute;inset:0;pointer-events:none;opacity:.5;
+  background:radial-gradient(ellipse at center,transparent 40%,rgba(0,0,0,.92) 100%)}
+#scan{position:absolute;inset:0;pointer-events:none;opacity:.55;
+  background:repeating-linear-gradient(0deg,rgba(0,0,0,.22) 0 1px,transparent 1px 3px)}
+#flash{position:absolute;inset:0;background:#fff;opacity:0;pointer-events:none;transition:opacity .45s ease-out}
+#flash.on{opacity:.9;transition:none}
+#flash.red{background:#a00}
+#stressbar{position:absolute;left:8px;bottom:6px;display:flex;align-items:center;gap:6px;font-size:11px;color:#a77;opacity:.85}
+#stressbar div{width:70px;height:5px;background:#200;border:1px solid #522}
+#stressbar i{display:block;height:100%;width:0;background:var(--red)}
+
+#stage.shake{animation:shake .5s linear}
+#stage.glitch #scene{animation:glitch .5s steps(2) }
+@keyframes shake{
+  0%,100%{transform:translate(0,0)}10%{transform:translate(-6px,3px)}20%{transform:translate(5px,-4px)}
+  30%{transform:translate(-4px,-3px)}40%{transform:translate(6px,4px)}50%{transform:translate(-5px,2px)}
+  60%{transform:translate(4px,-5px)}70%{transform:translate(-3px,4px)}80%{transform:translate(3px,-2px)}90%{transform:translate(-2px,1px)}}
+@keyframes glitch{
+  0%{filter:none;transform:translateX(0)}25%{filter:hue-rotate(90deg) saturate(3);transform:translateX(-6px)}
+  50%{filter:invert(1);transform:translateX(7px)}75%{filter:hue-rotate(-60deg) contrast(2);transform:translateX(-3px)}100%{filter:none;transform:none}}
+
+/* ---- テキストボックス ---- */
+#textbox{position:relative;min-height:8.5em;padding:14px 18px 16px;background:#0a0a0c;border:2px solid #3a3a3e;
+  box-shadow:inset 0 0 0 1px #000;cursor:pointer}
+#name{display:inline-block;margin-bottom:4px;font-size:clamp(12px,1.9vw,16px);color:#d8a0a0;letter-spacing:.1em;min-height:1.2em}
+#text{margin:0;font-size:clamp(15px,2.5vw,22px);line-height:1.85;min-height:3.7em;white-space:pre-wrap}
+#next{position:absolute;right:14px;bottom:8px;color:var(--dim);animation:blink 1s steps(2) infinite}
+@keyframes blink{50%{opacity:0}}
+
+#choices{display:flex;flex-direction:column;gap:8px}
+#choices button{font:inherit;font-size:clamp(14px,2.3vw,20px);text-align:left;padding:12px 16px;color:var(--fg);
+  background:#0d0d10;border:1px solid #55555b;cursor:pointer;animation:fadein .4s both}
+#choices button:hover,#choices button:focus-visible{background:#22090b;border-color:var(--red);outline:none}
+#choices button b{color:var(--dim);margin-right:.6em;font-weight:normal}
+
+#tools{display:flex;justify-content:space-between;gap:8px}
+#tools button{font:inherit;font-size:12px;color:var(--dim);background:transparent;border:1px solid #2c2c30;padding:5px 10px;cursor:pointer}
+#tools button:hover{color:var(--fg);border-color:#666}
+
+/* ---- 章タイトル ---- */
+#chapter{position:fixed;inset:0;z-index:30;background:#000;display:flex;align-items:center;justify-content:center;
+  font-size:clamp(20px,4.2vw,38px);letter-spacing:.25em;color:#d8d2c6;text-align:center;padding:2em;animation:chap 2.4s both}
+@keyframes chap{0%{opacity:0}18%{opacity:1}78%{opacity:1}100%{opacity:0}}
+
+/* ---- オーバーレイ画面 ---- */
+#screen{position:fixed;inset:0;z-index:20;display:none;align-items:center;justify-content:center;overflow:auto;
+  background:rgba(0,0,0,.86);padding:20px}
+#screen.on{display:flex}
+.panel{width:100%;max-width:640px;margin:auto;text-align:center;animation:fadein .9s both}
+@keyframes fadein{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.panel h1{font-size:clamp(28px,7vw,52px);font-weight:normal;letter-spacing:.18em;margin:.2em 0 .3em;color:#eee;
+  text-shadow:0 0 18px rgba(180,20,30,.55);animation:flick 5s infinite}
+@keyframes flick{0%,92%,100%{opacity:1}93%{opacity:.35}94%{opacity:1}96%{opacity:.5}97%{opacity:1}}
+.panel h2{font-weight:normal;letter-spacing:.12em;margin:.2em 0 .8em}
+.sub{color:var(--dim);letter-spacing:.2em;font-size:13px;margin:0}
+.warn{font-size:12.5px;line-height:1.9;color:#a99;border:1px solid #3a2022;padding:10px 12px;margin:20px 0;text-align:left}
+.panel button,.btn{display:block;width:100%;max-width:340px;margin:10px auto;font:inherit;font-size:17px;padding:12px 16px;
+  color:var(--fg);background:#0d0d10;border:1px solid #666;cursor:pointer;letter-spacing:.1em}
+.panel button:hover{background:#2a0b0e;border-color:var(--red)}
+.panel button.small{font-size:13px;padding:8px 10px;max-width:260px}
+.panel details{margin-top:18px;color:var(--dim);font-size:13px}
+.panel details summary{cursor:pointer}
+.panel label{display:inline-flex;gap:8px;align-items:center;font-size:13px;color:var(--dim);margin-top:8px;cursor:pointer}
+
+.quiz-q{font-size:clamp(17px,3.2vw,24px);line-height:2;margin:26px 0 22px;min-height:5em}
+.quiz-n{color:var(--dim);letter-spacing:.3em;font-size:13px}
+.quiz-bar{display:flex;gap:6px;justify-content:center;margin:12px 0}
+.quiz-bar i{width:26px;height:4px;background:#2a2a2e}
+.quiz-bar i.on{background:var(--red)}
+
+.result-count{font-size:22px;letter-spacing:.3em;margin:14px 0}
+.result-text{line-height:2;font-size:16px;text-align:left;margin:16px 0 22px}
+.tiny{font-size:12px;color:var(--dim);line-height:1.8}
+
+.ending-kind{letter-spacing:.4em;font-size:13px;margin-bottom:6px}
+.ending h1{font-size:clamp(24px,5.5vw,40px);animation:none}
+.ending p.line{line-height:2.1;font-size:clamp(15px,2.6vw,19px);margin:.7em 0;opacity:0;animation:fadein 1.2s forwards}
+.ending .note{margin:26px 0 8px;padding:12px 14px;border:1px solid #333;color:#b8b2a6;font-size:13px;line-height:1.9;text-align:left}
+.ending.bad h1,.ending.bad .ending-kind{color:#c0343e}
+.ending.good h1,.ending.good .ending-kind{color:var(--good)}
+.ending.true h1,.ending.true .ending-kind{color:var(--gold)}
+
+.gallery{list-style:none;padding:0;margin:18px 0;text-align:left}
+.gallery li{padding:10px 12px;border-bottom:1px solid #222;display:flex;justify-content:space-between;gap:10px;font-size:15px}
+.gallery li span{font-size:11px;letter-spacing:.2em}
+.gallery li.lock{color:#555}
+.k-bad{color:#c0343e}.k-good{color:var(--good)}.k-true{color:var(--gold)}
+
+/* ---- 演出を弱めるモード ---- */
+body.calm #stage.shake,body.calm #stage.glitch #scene{animation:none}
+body.calm #flash{display:none}
+body.calm .panel h1{animation:none}
+
+@media (max-width:560px){
+  #app{padding:4px}
+  #textbox{padding:12px 12px 16px}
+}
